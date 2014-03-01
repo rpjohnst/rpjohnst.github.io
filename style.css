@@ -18,13 +18,19 @@ img {
 	vertical-align: baseline;
 	max-width: 100%;
 }
+dl { margin: 0; }
 
 .container { padding: 12px 30px; }
 
 .row { margin: 0 auto; }
 .row .row { min-width: 0; }
 .row:after { content: " "; display: table; clear: both; }
-.column, .columns { float: left; position: relative; }
+.column, .columns {
+	float: left;
+	position: relative;
+	padding: 0 12px;
+	-moz-box-sizing: border-box;
+}
 
 .row .one.columns { width: 8.3333%; }
 .row .two.columns { width: 16.6667%; }
@@ -64,6 +70,21 @@ img {
 .row .pull-ten { right: 83.3333%; }
 .row .pull-eleven { right: 91.6667%; }
 .row .pull-twelve { right: 100%; }
+
+dl.tabs.vertical { border-bottom: 1px solid #ccc; }
+dl.tabs.vertical dd {
+	margin: 0;
+	line-height: 30px;
+}
+dl.tabs.vertical dd a {
+	display: block;
+	height: 30px;
+	padding: 0 12px;
+	border: 0 solid #ccc;
+	border-width: 1px 1px 0;
+	margin: 0;
+	background: #eee;
+}
 
 .top {
 	padding: 0 30px;

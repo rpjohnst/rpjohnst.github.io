@@ -1,0 +1,8 @@
+- name: DejaVu
+  url: //dejavu.abubalay.com
+
+- name: MarkBot
+  url: https://github.com/rpjohnst/markbot
+
+- name: Argo
+  url: https://github.com/rpjohnst/argo

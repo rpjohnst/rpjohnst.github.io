@@ -31,12 +31,19 @@
 		<div class="container">
 			<div class="row">
 				<div class="nine columns push-three">
-	{{content}}
+{{content}}
 				</div>
-				<div class="three columns pull-nine">hi</div>
+				<div class="three columns pull-nine">
+					<h2>About Me</h2>
+					{{ "I am a programmer. I make [games](/games), design [programming languages](/articles/programming-language) and [operating systems](/articles/operating-system), and build websites. I'm currently working on [DejaVu](//dejavu.abubalay.com), a reimplementation of [GameMaker](http://www.yoyogames.com)." | markdownify }}
+				</div>
 			</div>
 
-			<p>&copy; Russell Johnston 2006-2014</p>
+			<div class="row">
+				<div class="twelve columns">
+					<p>&copy; Russell Johnston 2006-2014</p>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
