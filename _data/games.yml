@@ -1,0 +1,39 @@
+- name: Slippy's Adventure
+  page: slippy
+  description: >
+      I wrote Slippy's Adventure around Christmas time. Slippy is lost in the middle of winter, he's cold and wants to go home... but red circles are appearing to shoot at him. 
+
+- name: VKEC
+  page: vkec
+  description: >
+      Bounce off the walls, collect powerups, shoot giant centipedes (or are you just really small)
+
+- name: StarrySky
+  page: starry
+  description: >
+      StarrySky is a One Script Game&trade;. As in, I completely ignored all the nice parts of Game Maker and wrote it all in one script in one object event.
+
+- name: Blop
+  page: blop
+  description: >
+      This is the first game I made without Game Maker, instead using C#. The framerate timer's precision is too low, and my dad wrote the level XML parser.
+
+- name: PickUpBlock
+  page: pickup
+  description: >
+      PickUpBlock was inspired by the TI calculator game Block Dude. I wrote it for a mission on RoboSquid, a now-defunct game development community. I was never entirely sure if the puzzle difficulty level was balanced at all because I wrote the puzzles...
+
+- name: vktr
+  page: vktr
+  description: >
+      This is another attempt at a <a href="#vkec">VKEC</a>-style game. It's shinier?
+
+- name: King Solomon's Mines
+  page: ksm
+  description: >
+      I made this game with a couple of friends for a <a href="http://tsaweb.org">Technology Student Association</a> competition. It's a spin-off of Oregon Trail, based on H. Rider Haggard's book King Solomon's Mines. It made it to nationals, but I think that reflects more on Utah's competition that year than anything.
+
+- name: Rocket Sharks
+  page: sharks
+  description: >
+      So, how can you get any better than rockets <em>and</em> sharks!? With explosions and torpedos and a submarine!

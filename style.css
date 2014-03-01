@@ -5,9 +5,8 @@ body {
 	line-height: 1.42856;
 	color: #333;
 }
-h1 {
-	margin: 0;
-}
+h1, h2, h3, h4, h5, h6 { margin: 0; }
+h3 { margin-top: 12px; }
 a {
 	color: #428bca;
 	text-decoration: none;
@@ -16,8 +15,11 @@ a:hover, a:focus {
 	color: #2a6496;
 }
 img {
-	vertical-align: middle;
+	vertical-align: baseline;
+	max-width: 100%;
 }
+
+.container { padding: 12px 30px; }
 
 .row { margin: 0 auto; }
 .row .row { min-width: 0; }
@@ -72,6 +74,7 @@ img {
 }
 .top:after { content: " "; clear: both; }
 .top .header { height: 60px; }
+.top .header a { padding: 0; }
 .top .nav { float: right; height: 60px; }
 .top ul {
 	margin: 0;
@@ -84,5 +87,4 @@ img {
 	height: 60px;
 }
 .top .nav li { float: left; }
-
-.container { padding: 12px 30px; }
+.top img { vertical-align: middle; }
