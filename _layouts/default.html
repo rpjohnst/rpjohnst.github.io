@@ -5,37 +5,30 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{{ page.title }} - Abubalay</title>
 		<link rel="stylesheet" href="/style.css">
-		<script>
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-			ga('create', 'UA-25460869-1', 'abubalay.com');
-			ga('send', 'pageview');
-		</script>
 	</head>
 	<body>
 		<div class="top row">
-			<div class="header column">
-				<a href="/"><img src="/images/banner.png" alt="Abubalay"></a>
+			<div class="container">
+				<div class="header column">
+					<a href="/"><img src="/images/banner.png" alt="Abubalay"></a>
+				</div>
+				<ul class="nav column">
+					<li><a href="/">Home</a></li>
+					<li><a href="/games">Games</a></li>
+				</ul>
 			</div>
-			<ul class="nav column">
-				<li><a href="/">Home</a></li>
-				<li><a href="/articles">Articles</a></li>
-				<li><a href="/games">Games</a></li>
-				<li><a href="http://dejavu.abubalay.com">DejaVu</a></li>
-			</ul>
 		</div>
 
 		<div class="container">
 			<div class="row">
-				<div class="nine columns push-three">
-{{content}}
+				<div class="eight columns">
+					{{ content }}
 				</div>
-				<div class="three columns pull-nine">
-					<h2>About Me</h2>
-					{{ "I am a programmer. I make [games](/games), design [programming languages](/articles/programming-language) and [operating systems](/articles/operating-system), and build websites. I'm currently working on [DejaVu](//dejavu.abubalay.com), a reimplementation of [GameMaker](http://www.yoyogames.com)." | markdownify }}
+				<div class="four columns">
+					<h3>About Me</h3>
+					{{ "Software developer interested in game development, computer graphics, compilers, programming languages, and systems programming." | markdownify }}
+					{{ "GitHub: [rpjohnst](https://github.com/rpjohnst)" | markdownify }}
+					{{ "Twitter: [@rpjohnst](https://twitter.com/rpjohnst)" | markdownify }}
 				</div>
 			</div>
 

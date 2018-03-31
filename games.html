@@ -1,18 +1,18 @@
 ---
-layout: default
 title: Games
+layout: default
 ---
 
 <h2>Games</h2>
 
 {% for game in site.data.games %}
-	<div class="row">
-		<div class="two columns">
-			<img src="/images/thumb/{{ game.page }}.png" alt="logo">
-		</div>
-		<div class="ten columns">
-			<h4 id="{{ game.page }}">{{ game.name }}</h4>
-			<p>{{ game.description }}</p>
-		</div>
+<div class="row">
+	<div class="two columns">
+		<img src="/images/thumb/{{ game.page }}.png" alt="logo">
 	</div>
+	<div class="ten columns">
+		<h4 id="{{ game.page }}">{{ game.name }}</h4>
+		<p>{{ game.description }}</p>
+	</div>
+</div>
 {% endfor %}
