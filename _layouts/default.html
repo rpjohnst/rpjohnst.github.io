@@ -5,9 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{{ page.title }} - Abubalay</title>
 		<link rel="stylesheet" href="/style.css">
+		<link rel="stylesheet" href="/syntax.css">
 	</head>
 	<body>
-		<div class="top row">
+		<nav class="row">
 			<div class="container">
 				<div class="header column">
 					<a href="/"><img src="/images/banner.png" alt="Abubalay"></a>
@@ -15,16 +16,17 @@
 				<ul class="nav column">
 					<li><a href="/">Home</a></li>
 					<li><a href="/games">Games</a></li>
+					<li><a href="/blog">Blog</a></li>
 				</ul>
 			</div>
-		</div>
+		</nav>
 
 		<div class="container">
 			<div class="row">
-				<div class="eight columns">
+				<article class="content column">
 					{{ content }}
-				</div>
-				<div class="four columns">
+				</article>
+				<div class="sidebar column">
 					<h3>About Me</h3>
 					{{ "Software developer interested in game development, computer graphics, compilers, programming languages, and systems programming." | markdownify }}
 					{{ "GitHub: [rpjohnst](https://github.com/rpjohnst)" | markdownify }}
@@ -32,11 +34,11 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<footer class="row">
 				<div class="twelve columns">
-					<p>&copy; Russell Johnston 2006-2014</p>
+					<p>&copy; 2006-2018 Russell Johnston</p>
 				</div>
-			</div>
+			</footer>
 		</div>
 	</body>
 </html>

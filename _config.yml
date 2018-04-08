@@ -1,1 +1,10 @@
-permalink: /articles/:title
+permalink: /blog/:year/:month/:day/:title
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "post"
+
+kramdown:
+  entity_output: symbolic

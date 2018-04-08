@@ -3,7 +3,7 @@ title: Home
 layout: default
 ---
 
-Hi, it's me, Russell Johnston. Here are some things I'm currently working with and on:
+Hi, it's me, Russell Johnston. Here are some things I'm currently working on:
 
 * [Dejavu](https://github.com/rpjohnst/dejavu) is a reimplementation of classic versions of [Game Maker](https://www.yoyogames.com/gamemaker) for fun and preservation. A previous attempt, built on LLVM, lived [here](https://dejavu.abubalay.com/).
 * [Visual Studio C++](https://www.visualstudio.com/vs/features/cplusplus/). At Microsoft, I'm on the team that handles IntelliSense (autocomplete, navigation, etc.).
