@@ -1,3 +1,6 @@
+title: Abubalay
+author: Russell Johnston
+
 permalink: /blog/:year/:month/:day/:title
 
 defaults:
@@ -8,3 +11,6 @@ defaults:
 
 kramdown:
   entity_output: symbolic
+
+plugins:
+  - jekyll-feed
