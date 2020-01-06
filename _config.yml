@@ -11,6 +11,9 @@ defaults:
 
 kramdown:
   entity_output: symbolic
+  syntax_highlighter_opts:
+    span:
+      default_lang: 'rust'
 
 plugins:
   - jekyll-feed
