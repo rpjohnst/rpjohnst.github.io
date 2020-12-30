@@ -25,7 +25,7 @@ The most recognizable example of interior mutability is [`Mutex`][mutex], which 
 
 ### Cell and its upgrades
 
-When all you want are a few references to a mutable object, there is a simpler alternative. The [`Cell`](cell) type started its life providing a very simple form of interior mutability. You could wrap it around a small `Copy` type to give it `&T`-based `get` and `set` methods, in exchange for giving up direct access to the object itself. For example, [`Rc`][rc]'s internal reference count field must be mutable so it can be updated when references are created or dropped, but it is also inherently shared, so that field is represented as a `Cell<usize>`.
+When all you want are a few references to a mutable object, there is a simpler alternative. The [`Cell`][cell] type started its life providing a very simple form of interior mutability. You could wrap it around a small `Copy` type to give it `&T`-based `get` and `set` methods, in exchange for giving up direct access to the object itself. For example, [`Rc`][rc]'s internal reference count field must be mutable so it can be updated when references are created or dropped, but it is also inherently shared, so that field is represented as a `Cell<usize>`.
 
 [cell]: https://doc.rust-lang.org/std/cell/struct.Cell.html
 [rc]: https://doc.rust-lang.org/std/rc/struct.Rc.html
@@ -34,7 +34,7 @@ Over time `Cell` has grown a few new abilities. [RFC 1651][rfc-1651] extended it
 
 [rfc-1651]: https://github.com/rust-lang/rfcs/blob/master/text/1651-movecell.md
 
-Even more interesting, [RFC 1789](rfc-1789) extended `Cell` to support *references to the interior of the wrapped object*. This was originally forbidden because writing to the outer `Cell` would overwrite the target of the reference... but if the target object is also wrapped in a `Cell`, that's just fine!  Specifically, RFC 1789 provides a conversion from `&Cell<[E]>` to `&[Cell<E>]`, by guaranteeing that `T` and `Cell<T>` have the same memory layout.
+Even more interesting, [RFC 1789][rfc-1789] extended `Cell` to support *references to the interior of the wrapped object*. This was originally forbidden because writing to the outer `Cell` would overwrite the target of the reference... but if the target object is also wrapped in a `Cell`, that's just fine!  Specifically, RFC 1789 provides a conversion from `&Cell<[E]>` to `&[Cell<E>]`, by guaranteeing that `T` and `Cell<T>` have the same memory layout.
 
 [rfc-1789]: https://github.com/rust-lang/rfcs/blob/master/text/1789-as-cell.md
 
