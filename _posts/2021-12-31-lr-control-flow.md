@@ -51,11 +51,11 @@ We can also express this more abstractly as a [pushdown automaton](https://en.wi
 
 To begin with, here are the function-local control flow graphs:
 
-<img src="/images/lr-control-flow/json-cfg.svg" height="210" alt="JSON parser control flow">
+<img src="/images/lr-control-flow/json-cfg.svg" alt="JSON parser control flow">
 
 Solid edges match input symbols, while dashed edges match nonterminals. Final states have a double border. To turn this into a PDA, we'll need to convert the dashed edges into explicit stack operations. Edges are now labeled `x ; A / B`, to read an input symbol `x`, pop a stack symbol `A`, and push a stack symbol `B`, with &#x3F5; ("epsilon") standing for the empty string. Parsing is complete when we reach a final state *and* have an empty stack.
 
-<img src="/images/lr-control-flow/json-pda.svg" height="210" alt="JSON parser PDA">
+<img src="/images/lr-control-flow/json-pda.svg" alt="JSON parser PDA">
 
 This is a bit of a rat's nest, but if you pick it apart you can see that any state at the source of a dashed edge now has a new edge to push a symbol and transition to the called function, and the end of that function has a new edge to pop the symbol and return to the target of the dashed edge.
 
@@ -92,7 +92,7 @@ expr = expr "+" NUMBER
      | NUMBER
 ```
 
-<img src="/images/lr-control-flow/add-pda.svg" height="150" alt="sum parser PDA">
+<img src="/images/lr-control-flow/add-pda.svg" alt="sum parser PDA">
 
 Using the same approach of mechanically following the &#x3F5; edges to find a set of tokens to read next, we can see that the first state must read a `NUMBER`, and the last state must read a `"+"` or the end of the input. And indeed, we expect an alternating sequence of `NUMBER` and `"+"` tokens. This PDA even makes it obvious that the sequence must start with a `NUMBER`.
 
@@ -130,7 +130,7 @@ expr = expr "+" NUMBER
      | NUMBER
 ```
 
-<img src="/images/lr-control-flow/sub-pda.svg" height="230" alt="subtraction parser PDA">
+<img src="/images/lr-control-flow/sub-pda.svg" alt="subtraction parser PDA">
 
 Not only do we need to take an arbitrary number of &#x3F5; edges up front, we also need to decide for each one whether it corresponds to addition or subtraction, so the automaton can return to the right place.
 
@@ -189,7 +189,7 @@ elems = elems "," value
       | value
 ```
 
-<img src="/images/lr-control-flow/json-lr-epsilon.svg" height="230" alt="JSON LR parser with &#x3F5; edges">
+<img src="/images/lr-control-flow/json-lr-epsilon.svg" alt="JSON LR parser with &#x3F5; edges">
 
 At this point, the dashed &#x3F5; edges still match recursive descent's function calls, which has one subtle complication: to make the fixed-length rule scheme work, you would need to avoid pushing states reached via those &#x3F5; edges. The actual LR algorithm doesn't need to worry about this, though, because of how it implements the first Pratt parsing trick:
 
@@ -199,7 +199,7 @@ The first trick was to skip "call" edges and rely only on the "return" edges (or
 
 This is done by finding the "&#x3F5; closure" of each state, or the set of all states reachable by following &#x3F5; edges. Then we can introduce shortcut edges past them like this:
 
-<img src="/images/lr-control-flow/json-lr-closure.svg" height="280" alt="JSON LR parser without &#x3F5; edges">
+<img src="/images/lr-control-flow/json-lr-closure.svg" alt="JSON LR parser without &#x3F5; edges">
 
 This is, again, a bit of a rat's nest. The main thing to notice here is that, except for the `value` rule, all the rules' initial states have disappeared. We skip past them every time we enter a new rule, directly from its "call" site.
 
@@ -209,7 +209,7 @@ The second trick was to merge common prefixes between rules. A nondeterministic 
 
 This is done by introducing a new state for each *combination* of states that the nondeterministic state machine might be in at the same time. For our JSON grammar, this actually shrinks the automaton a bit:
 
-<img src="/images/lr-control-flow/json-lr-deterministic.svg" height="240" alt="Deterministic JSON LR parser">
+<img src="/images/lr-control-flow/json-lr-deterministic.svg" alt="Deterministic JSON LR parser">
 
 The result in this case is still probably too messy to be worth writing by hand, and in my opinion these two transformations are what make LR parsers so opaque---this state machine no longer corresponds directly to the grammar. On the other hand, in the world of PDAs they are the same transformations we used for Pratt parsing, where applying them selectively is a powerful tool.
 
@@ -224,7 +224,7 @@ term = term "*" NUMBER
      | NUMBER
 ```
 
-<img src="/images/lr-control-flow/expr-lr-conflict.svg" height="210" alt="Expression LR parser with a conflict">
+<img src="/images/lr-control-flow/expr-lr-conflict.svg" alt="Expression LR parser with a conflict">
 
 Something funny is going on with the final state with the two incoming `term` edges. Imagine parsing the expression `1 + 1`. After taking the first `NUMBER` edge, we reduce back to the first state and take the `term` edge. Without lookahead, we have no way of knowing whether we are in the middle of a `term = term "*" NUMBER` rule, or have just finished an `expr = term` rule!
 
