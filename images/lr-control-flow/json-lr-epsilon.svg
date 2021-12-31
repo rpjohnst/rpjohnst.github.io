@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="530" height="230">
+    <style>
+        text { text-anchor: middle; }
+        .state { r: 18px; fill: none; stroke: black; }
+        .final { r: 16px; }
+        .edge { fill: none; stroke: black; marker-end: url(#arrow); }
+        .dash { stroke-dasharray: 5, 5; }
+    </style>
+    <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M 0 0 L 10 5 0 10 z" />
+        </marker>
+    </defs>
+
+    <circle class="state" cx="20" cy="60" />
+    <circle class="state" cx="140" cy="60" />
+
+    <path class="edge" d="M 32.728 47.728 Q 80 20 127.272 47.728" />
+    <text x="80" y="28">NUMBER</text>
+    <path class="edge" d="M 35.588 69 Q 80 100 127.272 72.728" />
+    <text x="90" y="98">array</text>
+    <path class="dash edge" d="M 32.728 72.728 Q 110 150 187.272 72.728" />
+    <text x="130" y="120">&#x3F5;</text>
+
+    <circle class="final state" cx="140" cy="60" />
+
+    <circle class="state" cx="200" cy="60" />
+    <circle class="state" cx="300" cy="30" />
+    <circle class="state" cx="400" cy="30" />
+    <circle class="state" cx="300" cy="90" />
+    <circle class="state" cx="400" cy="90" />
+    <circle class="state" cx="500" cy="90" />
+
+    <path class="edge" d="M 212.728 47.272 L 282 30" />
+    <text x="250" y="30">"["</text>
+    <path class="edge" d="M 212.728 72.728 L 282 90" />
+    <text x="250" y="75">"["</text>
+
+    <path class="edge" d="M 318 30 L 382 30" />
+    <text x="350" y="25">"]"</text>
+
+    <path class="edge" d="M 318 90 L 382 90" />
+    <text x="350" y="80">elems</text>
+    <path class="dash edge" d="M 287.272 102.720 L 211.272 147.272" />
+    <text x="250" y="115">&#x3F5;</text>
+
+    <path class="edge" d="M 418 90 L 481 90" />
+    <text x="450" y="80">"]"</text>
+
+    <circle class="final state" cx="400" cy="30" />
+
+    <circle class="final state" cx="500" cy="90" />
+
+    <circle class="state" cx="200" cy="160" />
+    <circle class="state" cx="300" cy="160" />
+    <circle class="state" cx="400" cy="160" />
+    <circle class="state" cx="500" cy="160" />
+    <circle class="state" cx="300" cy="210" />
+
+    <path class="dash edge" d="M 212.728 147.272 A 18 18 0 1 0 187.272 147.272" />
+    <text x="200" y="110">&#x3F5;</text>
+    <path class="edge" d="M 218 160 L 282 160" />
+    <text x="250" y="150">elems</text>
+    <path class="dash edge" d="M 182 160 Q 80 150 29 75.588" />
+    <text x="100" y="130">&#x3F5;</text>
+    <path class="edge" d="M 212.728 172.728 L 282 210" />
+    <text x="240" y="205">value</text>
+
+    <path class="edge" d="M 318 160 L 382 160" />
+    <text x="350" y="150">","</text>
+
+    <path class="dash edge" d="M 387.272 172.272 Q 120 230 20 78" />
+    <text x="120" y="180">&#x3F5;</text>
+    <path class="edge" d="M 418 160 L 482 160" />
+    <text x="450" y="150">value</text>
+
+    <circle class="final state" cx="500" cy="160" />
+
+    <circle class="final state" cx="300" cy="210" />
+</svg>

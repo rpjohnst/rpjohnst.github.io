@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="530" height="150">
+    <style>
+        text { text-anchor: middle; }
+        .state { r: 18px; fill: none; stroke: black; }
+        .final { r: 16px; }
+        .edge { fill: none; stroke: black; marker-end: url(#arrow); }
+    </style>
+    <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M 0 0 L 10 5 0 10 z" />
+        </marker>
+    </defs>
+
+    <circle class="state" cx="40" cy="80" />
+    <circle class="state" cx="120" cy="80" />
+    <circle class="state" cx="240" cy="80" />
+    <circle class="state" cx="400" cy="80" />
+
+    <path class="edge" d="M 52.728 68.272 A 18 18 0 1 0 28.382 67.272" />
+    <text x="40" y="30">&#x3F5; ; &#x3F5; / E</text>
+    <path class="edge" d="M 52.728 92.728 Q 220 140 388.272 92.728" />
+    <text x="220" y="135">NUMBER ; &#x3F5; / &#x3F5;</text>
+
+    <path class="edge" d="M 138 80 L 222 80" />
+    <text x="180" y="72">"+" ; &#x3F5; / &#x3F5;</text>
+
+    <path class="edge" d="M 258 80 L 382 80" />
+    <text x="320" y="72">NUMBER ; &#x3F5; / &#x3F5;</text>
+
+    <path class="edge" d="M 388.272 67.272 Q 270 5 132.728 67.272" />
+    <text x="270" y="30">&#x3F5; ; E / &#x3F5;</text>
+    <circle class="final state" cx="400" cy="80" />
+</svg>
