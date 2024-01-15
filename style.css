@@ -40,6 +40,7 @@ pre {
 	padding-left: 6px;
 	position: relative;
 }
+code { font-size: 14px; }
 blockquote {
 	margin: 16px 0;
 	padding: 0 19px 0 16px;
