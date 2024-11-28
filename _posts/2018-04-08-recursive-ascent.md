@@ -10,7 +10,7 @@ So I decided I would try an experiment: write an LR parser by hand, and see how 
 
 The code in this article is written in [Rust](https://www.rust-lang.org). It should be easy to follow if you're familiar with a language with sum types and pattern matching.
 
-### The LR algorithm
+## The LR algorithm
 
 An LR parser is a kind of *shift-reduce* parser. It works by *shifting* tokens from the input onto a stack until it recognizes a rule from the grammar, when it *reduces* those tokens into the thing they represent. Unlike recursive descent, which processes the grammar top-down, LR is bottom-up: it reads the complete body of a rule before it decides which rule to use.
 
@@ -20,7 +20,7 @@ A table-driven LR implementation is fairly direct---an actual stack, a lookup ta
 
 That was one thing that confused me early on. The recursion in "recursive descent" happens when the parser "descends" into a nested rule. I kept expecting the function calls of recursive ascent to "ascend" somehow. This is not how it works! The stack grows with function calls on shift actions and shrinks with returns on reduce actions.
 
-### A small grammar
+## A small grammar
 
 Here is a simple example grammar to try this out. It matches a subset of JSON---possibly-nested arrays of numbers.
 
@@ -55,7 +55,7 @@ Parsing the input `[1, [], 3]`, using the shift-reduce approach described above,
 
 Notice the runs of reduce actions: the first time, it works its way up from `1` to `value` to `elements`; later, from `[ ]` to `array` to `value` and from `elements , value` to `elements`; finally, from `[ elements ]` to `array` to `value`.
 
-### Tokens and nonterminals
+## Tokens and nonterminals
 
 The stack holds two types of objects: tokens and nonterminals. A token is the lowest-level piece of input produced by the lexer---in this case, numbers and punctuation. A nonterminal is the name on the left-hand side of a rule, and the output of a reduce action---`value`, `array`, or `elements`.
 
@@ -100,7 +100,7 @@ Finally, we need a way to report parse errors. We can use an empty struct for no
 struct ParseError;
 ```
 
-### Shifting and reducing
+## Shifting and reducing
 
 The parser's initial state is just before a `value`. We can express this with a made-up rule called `goal` built from a `value` and the end of the input, written as `$`. We can write out this state using a `*` to mark the current position:
 
@@ -200,7 +200,7 @@ fn goal_value(lex: &mut Lex, value: Value) -> Result<Value, ParseError> {
 }
 ```
 
-### Arrays
+## Arrays
 
 When the parser sees a `"["` instead of a `NUMBER`, things get more complicated in several ways. Expanding the next state to include any sub-rules is a bit more involved:
 
@@ -278,7 +278,7 @@ fn elements_value(lex: &mut Lex, value: Value) -> Result<Elements, ParseError> {
 }
 ```
 
-### Left recursion
+## Left recursion
 
 Another complication is that the second `elements` rule is left recursive. If you're used to writing grammars for top-down parsers, you've probably avoided left recursion because it doesn't let the parser make any progress. In bottom-up parsers, left recursion lets the parser reduce as it goes rather than all at once at the end. (Take another look at the [example parse](#a-small-grammar) above!)
 
@@ -380,7 +380,7 @@ fn array_open_elements_close(lex: &mut Lex, elements: Elements) ->
 }
 ```
 
-### Recursive ascent
+## Recursive ascent
 
 That's a recursive ascent parser! It uses mutually-recursive function calls to build up sequences of tokens, eagerly combining them into nonterminals as it recognizes them. This is fairly different from recursive descent, but still possible to hand-write.
 

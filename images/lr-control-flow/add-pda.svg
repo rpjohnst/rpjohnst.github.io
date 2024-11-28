@@ -17,17 +17,17 @@
     <circle class="state" cx="400" cy="80" />
 
     <path class="edge" d="M 52.728 68.272 A 18 18 0 1 0 28.382 67.272" />
-    <text x="40" y="30">&#x3F5; ; &#x3F5; / E</text>
+    <text x="40" y="30">&#x3B5; ; &#x3B5; / E</text>
     <path class="edge" d="M 52.728 92.728 Q 220 140 388.272 92.728" />
-    <text x="220" y="135">NUMBER ; &#x3F5; / &#x3F5;</text>
+    <text x="220" y="135">NUMBER ; &#x3B5; / &#x3B5;</text>
 
     <path class="edge" d="M 138 80 L 222 80" />
-    <text x="180" y="72">"+" ; &#x3F5; / &#x3F5;</text>
+    <text x="180" y="72">"+" ; &#x3B5; / &#x3B5;</text>
 
     <path class="edge" d="M 258 80 L 382 80" />
-    <text x="320" y="72">NUMBER ; &#x3F5; / &#x3F5;</text>
+    <text x="320" y="72">NUMBER ; &#x3B5; / &#x3B5;</text>
 
     <path class="edge" d="M 388.272 67.272 Q 270 5 132.728 67.272" />
-    <text x="270" y="30">&#x3F5; ; E / &#x3F5;</text>
+    <text x="270" y="30">&#x3B5; ; E / &#x3B5;</text>
     <circle class="final state" cx="400" cy="80" />
 </svg>

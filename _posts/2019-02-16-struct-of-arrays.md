@@ -38,7 +38,7 @@ There are two major reasons you might do this:
 * The CPU cache works in units of fixed-size cache lines. When the program iterates through an array but only needs some of each object's fields, the other fields waste memory bandwidth and cache space. This layout fills up whole cache lines with only the fields that are needed.
 * [SIMD](https://en.wikipedia.org/wiki/SIMD) instructions perform the same operation on multiple values in parallel. This layout allows the CPU to handle data from multiple objects at once when transferring it into and out of SIMD registers.
 
-### Struct-of-arrays in Rust
+## Struct-of-arrays in Rust
 
 It's straightforward enough to do this in Rust by allocating a separate array for each field:
 
@@ -94,22 +94,22 @@ unsafe fn move_objects(table: &mut RawTable<GameObject>) {
 }
 ```
 
-### The future
+## The future
 
 I am already making use of `RawTable` as it stands today, in situations where I have a special-purpose pattern for which entries are initialized. But clearly this is not the ideal API for most actual users of `GameObject`s. I would like to be able to provide a `Table` type, the `Vec` to `RawTable`'s `RawVec`, but it's unclear to me how to do so on stable Rust.
 
-#### Split borrows
+### Split borrows
 
 For example, to allow [split borrows](https://doc.rust-lang.org/nomicon/borrow-splitting.html) into a `Table<GameObject>`, I might provide a method that returns a `(&mut [Vec2], &mut [Vec2], &mut [u32])`. But where to define this type, when `Table` can only learn about `GameObject` via the `Columns` trait? An associated type can't express this, because the references' lifetimes need to be tied to `Table` methods' `&mut self`.
 
 The solution here is probably [generic associated types](https://github.com/rust-lang/rust/issues/44265). In the meantime, perhaps a macro could generate the necessary code for each instantiation of `Table`, or `soak` could just live without split borrows.
 
-#### Slices and mutability
+### Slices and mutability
 
 This `(&mut [Vec2], &mut [Vec2], &mut [u32])` type has similar problems to the straightforward implementation of SoA above. The length is duplicated for each slice, and standard tools like iterators are not ergonomic to use. Ideally the `Columns` trait would expose the tuple of `(Vec2, Vec2, u32)` directly, and then `Table` would manipulate it to produce "table iterators," shared and mutable "table slices," and so forth.
 
 This time the solution is probably variadic generics, which seem even further away than generic associated types. There is, though, also probably less need for workarounds. Some API duplication, especially in a macro, is not the worst thing in the world.
 
-#### Driveyard
+### Driveyard
 
 I intend `soak` to become part of a larger set of tools for tweaking memory layout in Rust, called [Driveyard](https://github.com/driveyard/driveyard). Things like LLVM's [`StringMap`](https://github.com/llvm/llvm-project/blob/2946cd7/llvm/include/llvm/ADT/StringMap.h), a hash table with slices for keys, useful for string interning. Or like [Unity's ECS library](https://unity.com/unity/features/job-system-ECS), which solves several problems with existing Rust implementations of the concept. Or perhaps, as I recently [ranted about on Twitter](https://twitter.com/rpjohnst/status/1095765056308994048), tools for implementing pointer-based data structures.

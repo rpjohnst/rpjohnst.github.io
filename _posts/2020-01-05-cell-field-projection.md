@@ -7,7 +7,7 @@ I've just published the [`dioptre`][dioptre] crate, the newest addition to [Driv
 [dioptre]: https://crates.io/crates/dioptre
 [driveyard]: https://github.com/driveyard/driveyard
 
-### Interior mutability
+## Interior mutability
 
 One reason people wind up "fighting the borrow checker" in Rust is its strict rules around pointer aliasing. The two built-in reference types, `&T` and `&mut T`, allow either a single mutable `&mut T`, or multiple immutable `&T`s. Rust uses these rules to preserve memory safety without requiring a garbage collector. Other languages typically also allow mutation of shared (or *aliased*) objects instead. (See [The Problem With Single-threaded Shared Mutability][shared-mutability] or [Rust: A unique perspective][unique-perspective] for a more detailed look at these rules.)
 
@@ -23,7 +23,7 @@ The most recognizable example of interior mutability is [`Mutex`][mutex], which 
 [refcell]: https://doc.rust-lang.org/std/cell/struct.RefCell.html
 [oncecell]: https://docs.rs/once_cell/1.2.0/once_cell/sync/struct.OnceCell.html
 
-### Cell and its upgrades
+## Cell and its upgrades
 
 When all you want are a few references to a mutable object, there is a simpler alternative. The [`Cell`][cell] type started its life providing a very simple form of interior mutability. You could wrap it around a small `Copy` type to give it `&T`-based `get` and `set` methods, in exchange for giving up direct access to the object itself. For example, [`Rc`][rc]'s internal reference count field must be mutable so it can be updated when references are created or dropped, but it is also inherently shared, so that field is represented as a `Cell<usize>`.
 
@@ -38,7 +38,7 @@ Even more interesting, [RFC 1789][rfc-1789] extended `Cell` to support *referenc
 
 [rfc-1789]: https://github.com/rust-lang/rfcs/blob/master/text/1789-as-cell.md
 
-### Field projection
+## Field projection
 
 RFC 1789's `Cell` indexing operations are a form of *projection*, extracting a piece of an object from the whole. The most familiar form of projection operates on `struct` types, using the `foo.bar` syntax. Can we extend this to `Cell`-wrapped objects? This would let us write our type definitions in an idiomatic style, and only bring in `Cell` in parts of the program that need it.
 
@@ -91,7 +91,7 @@ for i in 0..data.len() {
 
 However, this is not ideal. It may (for a given program) make it harder to ensure array indices stay in-bounds, or it may make it harder for the compiler to optimize out bounds checks.
 
-#### Cell fields
+### Cell fields
 
 RFC 1789 enables this approach:
 
@@ -124,7 +124,7 @@ j.project(Point::x).set(...);
 i.project(Point::y).set(...);
 ```
 
-#### Split borrows
+### Split borrows
 
 As an extra note, because we're allowed to have multiple shared references into a struct, we don't need any special support for obtaining references to disjoint fields, the way we would for `&mut T` references:
 

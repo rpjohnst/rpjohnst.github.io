@@ -2,15 +2,15 @@
 title: The problem of safe FFI bindings in Rust
 ---
 
-Google has published a document on [Rust and C++ interoperability][chromium-interop] in the context of Chromium. It describes their criteria for the experience of calling C++ from Rust &mdash; minimal use of `unsafe`, no boilerplate beyond existing C++ declarations, and broad support for existing Chromium types.
+Google has published a document on [Rust and C++ interoperability][chromium-interop] in the context of Chromium. It describes their criteria for the experience of calling C++ from Rust --- minimal use of `unsafe`, no boilerplate beyond existing C++ declarations, and broad support for existing Chromium types.
 
 [chromium-interop]: https://www.chromium.org/Home/chromium-security/memory-safety/rust-and-c-interoperability
 
 The response to this document has included a lot of confusion and misinformation. Really, this is a continuation of a larger ongoing discussion of how to use `unsafe` properly. Rust FFI and `unsafe` are complicated and often subtle topics, so here I am going to attempt to summarize the issues and suggest how we might address them.
 
-### What is `unsafe`, exactly?
+## What is `unsafe`, exactly?
 
-[Rust]'s core value proposition is to "guarantee memory-safety and thread-safety &mdash; enabling you to eliminate many classes of bugs at compile time," without sacrificing the ability to target the same use cases as C++ (namely: performance-critical, embedded, and/or integrated with other languages).
+[Rust]'s core value proposition is to "guarantee memory-safety and thread-safety --- enabling you to eliminate many classes of bugs at compile time," without sacrificing the ability to target the same use cases as C++ (namely: performance-critical, embedded, and/or integrated with other languages).
 
 [rust]: https://www.rust-lang.org/
 
@@ -33,9 +33,9 @@ Thus, an `unsafe` block is more than a mere warning that "this program might cra
 
 **The most important part of an `unsafe` block is the surrounding context that ensures its contents will never break those rules, no matter how it is used.** (The question of ["how much context?"][scope-of-unsafe] is an interesting one. It's a bit of a tangent to this post, but the answer is generally based on module privacy.)
 
-[scope-of-unsafe]: https://www.ralfj.de/blog/2016/01/09/the-scope-of-unsafe.html 
+[scope-of-unsafe]: https://www.ralfj.de/blog/2016/01/09/the-scope-of-unsafe.html
 
-### How can calling C++ ever be safe?
+## How can calling C++ ever be safe?
 
 When a Rust program calls a foreign function (that is, one written in another language like C++), there are several ways things can go wrong, breaking Rust's memory and thread-safety promise. We can split them into two failure modes, which the surrounding context will need to prevent:
 
@@ -51,7 +51,7 @@ Writing matching type signatures by hand can be quite mechanical, tedious, and e
 
 [bindgen]: https://github.com/rust-lang/rust-bindgen
 
-However, C++ type signatures encode more information than `bindgen` understands, including *ownership* information &mdash; who is responsible for freeing the object, and when and how should they do so? The [`cxx`][cxx] binding generator understands several standard C++ "vocabulary" types like `std::vector` and `std::unique_ptr`, expanding the class of bugs we can eliminate.
+However, C++ type signatures encode more information than `bindgen` understands, including *ownership* information --- who is responsible for freeing the object, and when and how should they do so? The [`cxx`][cxx] binding generator understands several standard C++ "vocabulary" types like `std::vector` and `std::unique_ptr`, expanding the class of bugs we can eliminate.
 
 [cxx]: https://github.com/dtolnay/cxx/
 
@@ -65,7 +65,7 @@ At this point, **we can be sure that the Rust program is safe by inspecting thes
 
 The whole *rest* of the Rust program no longer matters at all, because it's already checked by the Rust compiler.
 
-### So what's the problem?
+## So what's the problem?
 
 After `cxx`'s announcement, it immediately received an issue titled ["Calling from Rust to C++ is not safe"][cxx-issue], which cut directly to the core of this discussion: `cxx` generates wrapper functions that make the `unsafe` foreign function calls for you, so a Rust program can call C++ without the literal text `unsafe` anywhere in its source code.
 
@@ -87,11 +87,11 @@ fn caller() {
 }
 ```
 
-In a sense, `unsafe` functions like this are the *exact opposite* of `unsafe` blocks. An `unsafe` *block* says "I've ensured that these operations are always safe." An `unsafe` *function* says "The caller is responsible for ensuring this operation is always safe." Ideally, both should carry comments justifying their correctness &mdash; on blocks, pointing out the safety checks; on functions, describing the rules the caller must follow.
+In a sense, `unsafe` functions like this are the *exact opposite* of `unsafe` blocks. An `unsafe` *block* says "I've ensured that these operations are always safe." An `unsafe` *function* says "The caller is responsible for ensuring this operation is always safe." Ideally, both should carry comments justifying their correctness --- on blocks, pointing out the safety checks; on functions, describing the rules the caller must follow.
 
 However, code generation happens before and outside of this whole system! There's no way to mark a macro or build script as an `unsafe` operation. This is the real question here: **Where do we put the comments justifying that generated, safe wrapper functions enforce the foreign functions' safety rules, and how would an audit know to look for them?**
 
-### What are our options?
+## What are our options?
 
 I begin with a couple of obligatory non-options:
 
@@ -107,7 +107,7 @@ This is also deeply unsatsifying. Even in C++, we should be aware of our APIs' r
 
 A couple of more realistic options:
 
-#### Hand-written wrappers
+### Hand-written wrappers
 
 You might take the time-honored approach of a typical "idiomatic Rust FFI wrapper" crate: use a binding generator however you like, but don't make its output public. Instead, hand-write the crate's public API from scratch.
 
@@ -117,7 +117,7 @@ This often works well! Plenty of libraries are small enough, the [`-sys` crate c
 
 It may also be the case that the foreign API is not conducive to being safely wrapped. Here it may be better to leave the bindings as `unsafe`, and build a safe API at a higher, and more application-specific, level.
 
-#### At last, generated wrappers
+### At last, generated wrappers
 
 You might instead come up with a convention for "`unsafe` macros." Put "unsafe" in their name, or require users to pass the `unsafe` at an appropriate position in the macro's input. [This is likely to show up in `cxx`][cxx-unsafe] at some point.
 
@@ -131,7 +131,7 @@ Another approach comes from Microsoft, in the [`winrt-rs`][winrt-rs] crate. WinR
 
 [winrt-rs]: https://github.com/microsoft/winrt-rs
 
-### Where's the fire?
+## Where's the fire?
 
 We have the technology to generate correctly-safe bindings for large C++ APIs, assuming most of those APIs limit their safety rules to things that can be inferred (by definition or by convention) from their type signatures. The remaining work, for the Chromium team behind their interoperability document, will be to validate that assumption for the APIs they call from Rust.
 
@@ -141,8 +141,8 @@ Does the presence of a tool like `cxx` (or, closer to their requirements, [`auto
 
 I believe that these kinds of tools can only help, by eliminating the mental overhead of more mechanical and tedious aspects of FFI. With the minor tweak of making themselves "`unsafe` greppable," I see no technical cause for alarm.
 
-If someone is inclined to take the YOLO approach of throwing `cxx` at whole C++ APIs with no further thought, then no amount of obfuscatory requirement for "more `unsafe`!" is going to dissuade them &mdash; though it may convince them to give up on Rust.
+If someone is inclined to take the YOLO approach of throwing `cxx` at whole C++ APIs with no further thought, then no amount of obfuscatory requirement for "more `unsafe`!" is going to dissuade them --- though it may convince them to give up on Rust.
 
-On the other hand, if someone is unaware of their obligation to make these checks, then we can hardly blame the tool's mere existence &mdash; it is instead a failure of the onboarding process, documentation, error messages, and so forth.
+On the other hand, if someone is unaware of their obligation to make these checks, then we can hardly blame the tool's mere existence --- it is instead a failure of the onboarding process, documentation, error messages, and so forth.
 
 Rust has always been built on safe wrappers around unsafe code; all that's new here is the scale of those wrappers. So if you find yourself wringing your hands about this whole direction and how it might corrupt the Rust ecosystem, I suggest instead putting some thought into how we might make that scale easier to manage.

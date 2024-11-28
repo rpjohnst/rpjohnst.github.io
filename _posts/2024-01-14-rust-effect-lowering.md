@@ -11,13 +11,13 @@ The theory of algebraic effects and handlers has explored this design space and 
 
 This connection suggests an API pattern that can be instantiated for arbitrary combinations of effects. It generalizes Rust's existing `Iterator` and `Future` traits in a way that supports existing Rust idioms while remaining a zero-cost abstraction by construction. (In other words, it works the same way as a specialized hand-written version, with no extra heap allocation or indirection.) It is also forward-compatible with, but does not require, hypothetical features like `async Drop`, (un)pinning, lending, or effect polymorphism.
 
-### Some definitions and how they apply to Rust
+## Some definitions and how they apply to Rust
 
 Consider the platonic concept of a "function," independent of programming language. At this level, the idea of a function is defined primarily by how it interacts with the rest of the program, rather than by any particular syntax or implementation strategy. That is, when we call something a function, we are talking about a sub-program that can be applied to some argument values, at which point its parameters are bound to those values, and it runs to produce a result.
 
 Algebraic effects are a similarly abstract idea. Where functions are defined in terms of parameters and application, effects are defined in terms of effect operations and handlers. Performing one of these operations suspends execution and transfers control flow to a handler somewhere up the call stack. The handler receives a first-class value representing the suspended computation (a "continuation"), which can be used to transfer control flow back and resume execution after the operation.
 
-> #### Type and effect systems
+> ### Type and effect systems
 >
 > Effects and functions are both purely dynamic constructs. They can exist entirely without types, as in dynamically typed languages. However, effectful languages with a type system do often extend it to a "type and effect system" that tracks the set of effect operations each sub-program may perform. One reason to do this is to ensure that there is always an appropriate handler available when an operation is performed. Another reason is to drive code generation, potentially producing more efficient output when the compiler knows precisely which interactions are possible. However, this post focuses on the dynamic aspect of effects.
 
@@ -141,7 +141,7 @@ handle async_work() {
 }
 ```
 
-### Combining effects
+## Combining effects
 
 So far we have only considered computations with a single kind of effect, but many computations can perform multiple kinds of effects. For example, an iterator may perform some asynchronous I/O to produce its output, or an asynchronous computation may fail. The abstract definition of effects accommodates this without any trouble---operations from different effects simply transfer control to different handlers.
 
@@ -205,7 +205,7 @@ In most contexts, effectful computations in Rust "decay" to their lowering, such
 
 > If this deferred behavior feels strange or magical, consider the behavior of place and value expressions (also called lvalues and rvalues). A place expression like `obj.field`, `*expr`, or `slice[i]` does not immediately do anything beyond computing a location. The choice of what to do with that location is deferred until the containing expression demands a specific behavior: an address-of operator `&expr` will materialize the location as a reference; a call `f(expr)` will move from the location; an assignment `expr = v` will write to the location. Like reading vs writing, the choice of running vs lowering is a property of how the expression is used.
 
-### How Rust implements effects
+## How Rust implements effects
 
 Rust implements effectful computations by lowering them to stackless coroutines. (More precisely, this is Rust's most general strategy; some effects use a subset or specialization of this approach.) The compiler transforms each computation into an object to hold its state while suspended, with a method to resume the computation. In Rust this object is often called a "state machine," but to avoid ambiguity I will use the more specific term *coroutine frame.*
 
@@ -245,7 +245,7 @@ trait Future {
 fn /* ... */ -> Result<Output, E>;
 ```
 
-> #### An alternate history: zero-cost continuation passing
+> ### An alternate history: zero-cost continuation passing
 >
 > With deeper language and compiler integration, a language could bring the efficiency of stackless coroutines to continuation passing style. The relevant insight is that the traditional call stack is already a form of continuation passing, restricted with linearity to enable contiguous allocation and in-place mutation. Restricting continuations further to a static depth makes their layout statically-knowable, in the same way as a chain of coroutine frames.
 >
@@ -259,7 +259,7 @@ fn /* ... */ -> Result<Output, E>;
 >
 > Rust's coroutine frames are essentially an emulation of this approach, necessitated by the language's lack of tail calls. The complications above are part of this emulation, not essential to zero-cost effects.
 
-### A detour: combining effects by layering
+## A detour: combining effects by layering
 
 Because these lowerings are so specialized, it is not always obvious how they should be combined. Haskell lowers effects in a way that is related to Rust: effectful computations are defined in terms of an ordinary in-language interface, making the lowering observable to other parts of the program. This interface, the `Monad` typeclass, is implemented by the handler rather than the computation, and has what Rust would call an `and_then` method.
 
@@ -281,7 +281,7 @@ Precisely because of this sort of type tetris, the Haskell ecosystem has grown s
 
 [delim]: https://gitlab.haskell.org/ghc/ghc/-/merge_requests/7942
 
-### Lowering combined effects
+## Lowering combined effects
 
 A running computation produces a sequence of effects drawn from a set. Its handler (or equivalently, set of handlers) must be prepared to accept any of them. Rust's single-effect lowering already uses an `enum` with one variant for the effect operation and another to signal that the operation has completed. This naturally extends to a larger `enum` with one variant for each effect, plus one for the initial call and final return.
 
@@ -337,7 +337,7 @@ Combining these continuation types calls for a different approach than adding va
 
 Finally, the use of a single coroutine frame also simplifies the design of features like `async Drop` or `poll_progress`, which do interesting things to the effectful computation's control flow graph. Where a chain of layered frames would require the cooperation of the handler to propagate these signals across the layers, the states of a single combined coroutine frame represent the whole control flow graph in one place.
 
-### Future possibilities
+## Future possibilities
 
 One of the motivations for the keyword generics initiative to consider the layered approach is a desire to avoid a combinatorial explosion of traits. The un-layered lowering already reduces this number because it does not differentiate between orderings. But if necessary, it can go even further than the `async Iterator` approach by using more modest and more widely-applicable extensions to the language, many of which are already implemented on nightly or have been repeatedly proposed. Allow me to engage in some wild speculation and play fast and loose with syntax.
 
@@ -423,6 +423,6 @@ handle /* ... */ {
 
 At this point, I am still unconvinced that this sort of generality is actually important for Rust. My point is rather that the un-layered effect lowering strategy (represented by `poll_next`) is forward-compatible with mechanisms for reducing trait proliferation, and indeed that it does this more directly than the layered strategy. This is what algebraic effects were designed for, after all.
 
-### Conclusion
+## Conclusion
 
 Algebraic effects are an attractive framework for designing these features of Rust, because they are more composable than approaches like monad transformers or effectful coroutine traits. Many of their affordances come from the way that effects are *commutative* and can be handled in any order. Languages like Haskell have already covered similar ground. We can learn from their experience to unblock features like `async gen` and `for await` now, while retaining a path toward greater flexibility.
